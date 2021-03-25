@@ -3,12 +3,10 @@ project(CatchMe)
 
 set(CMAKE_CXX_STANDARD 14)
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
-set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libraries")
 file(GLOB SOURCE_FILES ${SRC_DIR}/*.cpp)
 
 add_executable(CatchMe ${SOURCE_FILES})
-target_include_directories(${PROJECT_NAME} PRIVATE "${INCLUDE_DIR}")
 
 # GLFW
 set(GLFW_DIR "${LIB_DIR}/glfw")
@@ -28,6 +26,13 @@ add_library("glad" "${GLAD_DIR}/src/glad.c")
 target_include_directories("glad" PRIVATE "${GLAD_DIR}/include")
 target_include_directories(${PROJECT_NAME} PRIVATE "${GLAD_DIR}/include")
 target_link_libraries(${PROJECT_NAME} "glad" "${CMAKE_DL_LIBS}")
+
+# stb_image
+set(STB_DIR "${LIB_DIR}/stb_image")
+add_library("stb_image" "${STB_DIR}/src/stb_image.cpp")
+target_include_directories("stb_image" PRIVATE "${STB_DIR}/include")
+target_include_directories(${PROJECT_NAME} PRIVATE "${STB_DIR}/include")
+target_link_libraries(${PROJECT_NAME} "stb_image")
 
 include(FindPkgConfig)
 
