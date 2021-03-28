@@ -119,7 +119,7 @@ void createMaze(int M, int N, char **maze) {
     }
 }
 
-int main(int argc, char const *argv[]) {
+int main_1(int argc, char const *argv[]) {
 //    cout << "Random Maze Generator!" << endl;
 //    cout << "Enter the order of maze you want (rows (> 1) x cols (> 1)): ";
 //    cin >> m >> n;

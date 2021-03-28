@@ -19,7 +19,7 @@ Maze::Maze(int m, int n) {
 
     // TODO: remove get from generator
     char temp_maze[][10] = {
-            "# #######",
+            "#S#######",
             "#     # #",
             "### # # #",
             "# # #   #",
@@ -27,7 +27,7 @@ Maze::Maze(int m, int n) {
             "#   #   #",
             "##### ###",
             "#       #",
-            "####### #",
+            "#######E#",
     };
 
     for (int i = 0; i < M; i++) {
@@ -42,14 +42,14 @@ void Maze::Init() {
     for (int i = 0; i < M; i++) {
         for (int j = 0; j < N; j++) {
             if (maze[i][j] == '#') {
-                this->walls.emplace_back(glm::vec2(j * wall_size.x, i * wall_size.y), this->wall_size, glm::vec3(1.0f),
+                this->walls.emplace_back(glm::vec2(j * wall_size.x, i * wall_size.y), this->wall_size,
                                          ResourceManager::GetTexture("wall"));
-            }
-
+            } else if (maze[i][j] == 'S')
+                this->start_pos = glm::vec2(j,i);
+            else if (maze[i][j] == 'E')
+                this->end_pos = glm::vec2(j,i);
         }
     }
-
-
 }
 
 
@@ -59,3 +59,16 @@ void Maze::Draw(SpriteRenderer &renderer) {
     }
 
 }
+
+glm::vec2 Maze::GetWallSize() {
+    return this->wall_size;
+}
+
+glm::vec2 Maze::GetStart() {
+    return wall_size * start_pos + wall_size / 4.0f;
+}
+
+glm::vec2 Maze::GetEnd() {
+    return wall_size * end_pos + wall_size / 4.0f;
+}
+

@@ -20,8 +20,7 @@ Game::~Game() {
 SpriteRenderer *Renderer;
 
 void Game::Init() {
-    ResourceManager::LoadShader("../assets/shaders/vertexShader.glsl", "../assets/shaders/fragmentShader.glsl", nullptr,
-                                "sprite");
+    LoadResources();
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(this->Width), static_cast<float >(this->Height), 0.0f,
                                       -1.0f, 1.0f);
     auto shader = ResourceManager::GetShader("sprite");
@@ -29,9 +28,9 @@ void Game::Init() {
     shader.SetInteger("u_Image", 0);
     shader.SetMatrix4f("u_Projection", projection);
     Renderer = new SpriteRenderer(shader);
-    ResourceManager::LoadTexture("../assets/textures/smile.png", true, "face");
-    ResourceManager::LoadTexture("../assets/textures/wall.png", true, "wall");
     this->maze.Init();
+    std::cout << "hii";
+    this->player = new Player(maze.GetStart(), maze.GetWallSize() / 2.0f);
 }
 
 void Game::Update(float dt) {
@@ -46,4 +45,13 @@ void Game::Render() {
 //    Renderer->DrawSprite(ResourceManager::GetTexture("face"), glm::vec2(200.0f, 200.0f),
 //                         glm::vec2(600.0f, 600.0f), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
     this->maze.Draw(*Renderer);
+    this->player->Draw(*Renderer);
+}
+
+void Game::LoadResources() {
+    ResourceManager::LoadShader("../assets/shaders/vertexShader.glsl",
+                                "../assets/shaders/fragmentShader.glsl", nullptr, "sprite");
+    ResourceManager::LoadTexture("../assets/textures/smile.png", true, "face");
+    ResourceManager::LoadTexture("../assets/textures/wall.png", true, "wall");
+    ResourceManager::LoadTexture("../assets/textures/player/main.png", true, "player");
 }

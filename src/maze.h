@@ -14,7 +14,9 @@ private:
     int M, N;
     char **maze;
     glm::vec2 wall_size;
+    glm::vec2 start_pos, end_pos;
 public:
+
     Maze(int m, int n);
 
     void Init();
@@ -26,6 +28,11 @@ public:
     void Draw(SpriteRenderer &renderer);
 
     void Generate(int m, int n);
+    glm::vec2 GetStart();
+    glm::vec2 GetEnd();
+
+    glm::vec2 GetWallSize();
+
 
 };
 

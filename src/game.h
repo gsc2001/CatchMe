@@ -7,6 +7,7 @@
 
 #include "globals.h"
 #include "maze.h"
+#include "player.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -14,6 +15,7 @@
 class Game {
 public:
     GameState State;
+    Player *player;
     Maze maze;
     bool Keys[1024];
     unsigned int Width, Height;
@@ -29,6 +31,8 @@ public:
     void Update(float dt);
 
     void Render();
+
+    static void LoadResources();
 };
 
 
