@@ -18,5 +18,7 @@ const unsigned int SCREEN_HEIGHT = 900;
 
 const unsigned int MAZE_WIDTH = 4;
 const unsigned int MAZE_HEIGHT = 4;
+const float PLAYER_SPEED = 3.0f;
+
 
 #endif //CATCHME_GLOBALS_H

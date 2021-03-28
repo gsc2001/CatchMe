@@ -38,7 +38,16 @@ void Game::Update(float dt) {
 }
 
 void Game::ProcessInput(float dt) {
-
+    if (this->State == GAME_ACTIVE) {
+        if (this->Keys[GLFW_KEY_A])
+            this->player->MoveLeft();
+        if (this->Keys[GLFW_KEY_D])
+            this->player->MoveRight();
+        if (this->Keys[GLFW_KEY_W])
+            this->player->MoveUp();
+        if (this->Keys[GLFW_KEY_S])
+            this->player->MoveDown();
+    }
 }
 
 void Game::Render() {

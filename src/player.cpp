@@ -15,3 +15,16 @@ void Player::Move(glm::vec2 diff) {
 Player::Player(glm::vec2 pos, glm::vec2 size) : GameObject(pos, size, ResourceManager::GetTexture("player")) {
 
 }
+
+void Player::MoveRight() {
+    this->Move(glm::vec2(PLAYER_SPEED, 0));
+}
+void Player::MoveLeft(){
+    this->Move(glm::vec2(-PLAYER_SPEED, 0));
+}
+void Player::MoveDown() {
+    this->Move(glm::vec2(0, PLAYER_SPEED));
+}
+void Player::MoveUp() {
+    this->Move(glm::vec2(0, -PLAYER_SPEED));
+}
