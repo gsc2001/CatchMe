@@ -6,6 +6,7 @@
 #define CATCHME_GAME_H
 
 #include "globals.h"
+#include "maze.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -13,6 +14,7 @@
 class Game {
 public:
     GameState State;
+    Maze maze;
     bool Keys[1024];
     unsigned int Width, Height;
 

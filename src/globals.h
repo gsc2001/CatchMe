@@ -13,7 +13,10 @@ enum GameState {
     GAME_LOOSE
 };
 
-const unsigned int SCREEN_WIDTH = 800;
-const unsigned int SCREEN_HEIGHT = 600;
+const unsigned int SCREEN_WIDTH = 900;
+const unsigned int SCREEN_HEIGHT = 900;
+
+const unsigned int MAZE_WIDTH = 4;
+const unsigned int MAZE_HEIGHT = 4;
 
 #endif //CATCHME_GLOBALS_H
