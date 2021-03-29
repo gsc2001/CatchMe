@@ -30,6 +30,7 @@ void Game::Init() {
     Renderer = new SpriteRenderer(shader);
     this->maze.Init();
     this->player = new Player(maze.GetStart(), maze.GetWallSize() * glm::vec2(0.6f, 1.0f) / 1.5f);
+    this->imposter = new Imposter(maze.GetImposterPos(), maze.GetWallSize() * glm::vec2(0.6f, 1.0f) / 1.5f);
 }
 
 void Game::Update(float dt) {
@@ -62,6 +63,7 @@ void Game::Render() {
 //                         glm::vec2(600.0f, 600.0f), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
     this->maze.Draw(*Renderer);
     this->player->Draw(*Renderer);
+    this->imposter->Draw(*Renderer);
 }
 
 void Game::LoadResources() {

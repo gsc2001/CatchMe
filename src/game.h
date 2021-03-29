@@ -8,6 +8,7 @@
 #include "globals.h"
 #include "maze.h"
 #include "player.h"
+#include "imposter.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -16,6 +17,7 @@ class Game {
 public:
     GameState State;
     Player *player;
+    Imposter *imposter;
     Maze maze;
     bool Keys[1024];
     unsigned int Width, Height;

@@ -11,14 +11,17 @@ class Player : public GameObject {
 public:
     Player() : GameObject() {}
 
-    Player(glm::vec2 pos, glm::vec2 size);
+    Player(glm::vec2 pos, glm::vec2 size, glm::vec3 color = glm::vec3(1.0f));
 
     void Move(glm::vec2 diff);
-    void MoveLeft();
-    void MoveRight();
-    void MoveUp();
-    void MoveDown();
 
+    void MoveLeft();
+
+    void MoveRight();
+
+    void MoveUp();
+
+    void MoveDown();
 
 
 };

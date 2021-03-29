@@ -13,6 +13,12 @@ enum GameState {
     GAME_LOOSE
 };
 
+enum Movement {
+    UP,
+    DOWN,
+    LEFT, RIGHT, STOP
+};
+
 const unsigned int SCREEN_WIDTH = 900;
 const unsigned int SCREEN_HEIGHT = 900;
 
