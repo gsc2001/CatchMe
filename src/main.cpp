@@ -55,6 +55,7 @@ int main() {
         lastFrame = currentFrame;
         glfwPollEvents();
 
+
         // manage user input
         CatchMe.ProcessInput(deltaTime);
 

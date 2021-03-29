@@ -11,8 +11,8 @@
 
 Maze::Maze(int m, int n) {
 
-    this->M = 2 * m + 1;
-    this->N = 2 * n + 1;
+    this->M = m;
+    this->N = n;
     this->maze = new char *[M];
     this->directions = new Movement *[M * N];
     for (int i = 0; i < M; i++) {
@@ -87,7 +87,7 @@ glm::vec2 Maze::GetImposterPos() {
 }
 
 int Maze::getIdx(int i, int j) {
-    return i * N + j;
+    return i * MAZE_WIDTH + j;
 }
 
 void Maze::ComputeShortestPaths() {

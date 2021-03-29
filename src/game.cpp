@@ -10,7 +10,7 @@
 #include "maze.h"
 
 Game::Game(unsigned int width, unsigned int height) : State(GAME_ACTIVE), Keys(), Width(width), Height(height),
-                                                      maze(MAZE_WIDTH, MAZE_HEIGHT) {
+                                                      maze(MAZE_HEIGHT, MAZE_WIDTH) {
 }
 
 Game::~Game() {
@@ -34,7 +34,14 @@ void Game::Init() {
 }
 
 void Game::Update(float dt) {
-
+    this->imposter->Update(this->player->Position, this->maze.directions, this->maze.GetWallSize());
+    if (Game::DetectCollision(*this->imposter, *this->player)) {
+        State = GAME_LOOSE;
+#ifdef DEBUG
+        std::cout << "YOU LOST" << "\n";
+        exit(0);
+    }
+#endif
 }
 
 void Game::ProcessInput(float dt) {
@@ -75,9 +82,9 @@ void Game::LoadResources() {
 }
 
 bool Game::DetectCollision(const GameObject &a, const GameObject &b) {
-    bool collisionX = a.Position.x + a.Size.x >= b.Position.x &&
-                      b.Position.x + b.Size.x >= a.Position.x;
-    bool collisionY = a.Position.y + a.Size.y >= b.Position.y &&
-                      b.Position.y + b.Size.y >= a.Position.y;
+    bool collisionX = a.Position.x + a.Size.x + COLLISION_BUFFER >= b.Position.x &&
+                      b.Position.x + b.Size.x + COLLISION_BUFFER >= a.Position.x;
+    bool collisionY = a.Position.y + a.Size.y + COLLISION_BUFFER >= b.Position.y &&
+                      b.Position.y + b.Size.y + COLLISION_BUFFER >= a.Position.y;
     return collisionX && collisionY;
 }

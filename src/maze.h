@@ -23,6 +23,7 @@ public:
     void Init();
 
     std::vector<GameObject> walls;
+    // direction[i][j] -> direction to take if imposter at i and player at j
     Movement **directions;
 
     void Load(const char *file);
@@ -42,6 +43,7 @@ public:
     glm::vec2 GetImposterPos();
 
     int getIdx(int i, int j);
+
 };
 
 

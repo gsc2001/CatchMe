@@ -22,9 +22,10 @@ enum Movement {
 const unsigned int SCREEN_WIDTH = 900;
 const unsigned int SCREEN_HEIGHT = 900;
 
-const unsigned int MAZE_WIDTH = 4;
-const unsigned int MAZE_HEIGHT = 4;
+const int MAZE_WIDTH = 9;
+const int MAZE_HEIGHT = 9;
 const float PLAYER_SPEED = 3.0f;
+const float COLLISION_BUFFER = 3.0f;
 
 
 #endif //CATCHME_GLOBALS_H
