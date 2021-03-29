@@ -20,7 +20,7 @@ SpriteRenderer::DrawSprite(Texture2D &texture, const glm::vec2 &position, const 
     model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
 
     // scale
-    model = glm::scale(model, glm::vec3(size, 1.0f));
+    model = glm::scale(model, glm::vec3( size, 1.0f));
 
     this->shader.SetMatrix4f("u_Model", model);
     this->shader.SetVector3f("u_SpriteCol", color);

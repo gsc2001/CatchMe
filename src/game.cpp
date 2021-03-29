@@ -30,7 +30,7 @@ void Game::Init() {
     Renderer = new SpriteRenderer(shader);
     this->maze.Init();
     std::cout << "hii";
-    this->player = new Player(maze.GetStart(), maze.GetWallSize() / 2.0f);
+    this->player = new Player(maze.GetStart(), maze.GetWallSize() * glm::vec2(0.6f, 1.0f) / 1.5f);
 }
 
 void Game::Update(float dt) {
@@ -62,5 +62,5 @@ void Game::LoadResources() {
                                 "../assets/shaders/fragmentShader.glsl", nullptr, "sprite");
     ResourceManager::LoadTexture("../assets/textures/smile.png", true, "face");
     ResourceManager::LoadTexture("../assets/textures/wall.png", true, "wall");
-    ResourceManager::LoadTexture("../assets/textures/player/main.png", true, "player");
+    ResourceManager::LoadTexture("../assets/textures/player/0.png", true, "player");
 }
