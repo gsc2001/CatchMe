@@ -32,7 +32,9 @@ public:
 
     void Render();
 
+
     static void LoadResources();
+    static bool DetectCollision(const GameObject& a, const GameObject& b);
 };
 
 

@@ -9,6 +9,7 @@
 void Player::Move(glm::vec2 diff) {
     this->Position += diff;
     this->Position = glm::clamp(this->Position, glm::vec2(0.0f), glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT));
+
 }
 
 

@@ -29,7 +29,6 @@ void Game::Init() {
     shader.SetMatrix4f("u_Projection", projection);
     Renderer = new SpriteRenderer(shader);
     this->maze.Init();
-    std::cout << "hii";
     this->player = new Player(maze.GetStart(), maze.GetWallSize() * glm::vec2(0.6f, 1.0f) / 1.5f);
 }
 
@@ -39,6 +38,7 @@ void Game::Update(float dt) {
 
 void Game::ProcessInput(float dt) {
     if (this->State == GAME_ACTIVE) {
+        auto current_pos = this->player->Position;
         if (this->Keys[GLFW_KEY_A])
             this->player->MoveLeft();
         if (this->Keys[GLFW_KEY_D])
@@ -47,6 +47,13 @@ void Game::ProcessInput(float dt) {
             this->player->MoveUp();
         if (this->Keys[GLFW_KEY_S])
             this->player->MoveDown();
+
+        // detect collision with wall
+        for (const auto &wall : this->maze.walls) {
+            if (Game::DetectCollision(wall, *this->player)) {
+                this->player->Position = current_pos;
+            }
+        }
     }
 }
 
@@ -63,4 +70,12 @@ void Game::LoadResources() {
     ResourceManager::LoadTexture("../assets/textures/smile.png", true, "face");
     ResourceManager::LoadTexture("../assets/textures/wall.png", true, "wall");
     ResourceManager::LoadTexture("../assets/textures/player/0.png", true, "player");
+}
+
+bool Game::DetectCollision(const GameObject &a, const GameObject &b) {
+    bool collisionX = a.Position.x + a.Size.x >= b.Position.x &&
+                      b.Position.x + b.Size.x >= a.Position.x;
+    bool collisionY = a.Position.y + a.Size.y >= b.Position.y &&
+                      b.Position.y + b.Size.y >= a.Position.y;
+    return collisionX && collisionY;
 }
