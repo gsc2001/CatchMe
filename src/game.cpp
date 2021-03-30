@@ -4,6 +4,7 @@
 
 
 #include <iostream>
+#include <random>
 #include "game.h"
 #include "resource_manager.h"
 #include "sprite_renderer.h"
@@ -12,6 +13,7 @@
 Game::Game(unsigned int width, unsigned int height) : State(GAME_ACTIVE), Keys(), Width(width), Height(height),
                                                       maze(MAZE_HEIGHT, MAZE_WIDTH) {
 }
+
 
 Game::~Game() {
 
@@ -31,6 +33,9 @@ void Game::Init() {
     this->maze.Init();
     this->player = new Player(maze.GetStart(), maze.GetWallSize() * glm::vec2(0.6f, 1.0f) / 1.5f);
     this->imposter = new Imposter(maze.GetImposterPos(), maze.GetWallSize() * glm::vec2(0.6f, 1.0f) / 1.5f);
+
+    // TODO: correct this
+    this->imposter->Vapourize();
 }
 
 
@@ -78,6 +83,12 @@ void Game::Render() {
     this->player->Draw(*Renderer);
     if (this->imposter->IsActive)
         this->imposter->Draw(*Renderer);
+    if (this->powerup != nullptr) {
+        this->powerup->Draw(*Renderer);
+    }
+    if (this->obstacle != nullptr) {
+        this->obstacle->Draw(*Renderer);
+    }
 }
 
 void Game::LoadResources() {
@@ -88,6 +99,8 @@ void Game::LoadResources() {
     ResourceManager::LoadTexture("../assets/textures/player/0.png", true, "player");
     ResourceManager::LoadTexture("../assets/textures/check.jpg", false, "vapour_task");
     ResourceManager::LoadTexture("../assets/textures/check.jpg", false, "powerup_task");
+    ResourceManager::LoadTexture("../assets/textures/coin.png", true, "coin");
+    ResourceManager::LoadTexture("../assets/textures/bomb.png", true, "bomb");
 }
 
 bool Game::DetectCollision(const GameObject &a, const GameObject &b) {
@@ -100,13 +113,47 @@ bool Game::DetectCollision(const GameObject &a, const GameObject &b) {
 
 void Game::CheckCollisions() {
     // player and vaporize task
+    // TODO: correct this
+#ifndef DEBUG
     if (maze.vap_task->IsActive && Game::DetectCollision(*maze.vap_task, *player)) {
         this->imposter->Vapourize();
         this->maze.vap_task->IsActive = false;
     }
+#endif
     // player and powerup task
     if (maze.pow_task->IsActive && Game::DetectCollision(*maze.pow_task, *player)) {
         // TODO: Spawn powerup / obstacle
+        std::random_device rd;
+        std::mt19937 mt(rd());
+        std::uniform_int_distribution<int> r2(0, 2);
+        std::uniform_int_distribution<int> r_walls(0, this->maze.free_spaces.size());
+
+        bool is_powerup = r2(mt);
+        std::cout << is_powerup << "\n";
+
+        auto position = this->maze.free_spaces[r_walls(mt)];
+        auto wall_sz = this->maze.GetWallSize();
+        if (is_powerup) {
+            // powerup
+            this->powerup = new GameObject(wall_sz * position, wall_sz, ResourceManager::GetTexture("coin"));
+            std::cout << this->powerup->Position.x << " " << this->powerup->Position.y << "\n";
+        } else {
+            this->obstacle = new GameObject(wall_sz * position, wall_sz, ResourceManager::GetTexture("bomb"));
+            std::cout << this->obstacle->Position.x << " " << this->obstacle->Position.y << "\n";
+        }
         this->maze.pow_task->IsActive = false;
+    }
+
+    // player and powerup
+    if (powerup != nullptr and Game::DetectCollision(*powerup, *player)) {
+        this->score += SCORE_INC;
+        delete this->powerup;
+        this->powerup = nullptr;
+    }
+
+    if (obstacle != nullptr and Game::DetectCollision(*obstacle, *player)) {
+        this->score -= SCORE_DEC;
+        delete this->obstacle;
+        this->obstacle = nullptr;
     }
 }

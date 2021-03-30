@@ -17,6 +17,8 @@ class Game {
 public:
     GameState State;
     Player *player;
+    int score = 0;
+    GameObject *powerup = nullptr, *obstacle = nullptr;
     Imposter *imposter;
     Maze maze;
     bool Keys[1024];

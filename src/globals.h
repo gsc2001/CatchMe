@@ -26,6 +26,8 @@ const int MAZE_WIDTH = 9;
 const int MAZE_HEIGHT = 9;
 const float PLAYER_SPEED = 3.0f;
 const float COLLISION_BUFFER = 3.0f;
+const int SCORE_INC = 20;
+const int SCORE_DEC = 20;
 
 
 #endif //CATCHME_GLOBALS_H
