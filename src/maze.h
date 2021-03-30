@@ -23,8 +23,11 @@ public:
     void Init();
 
     std::vector<GameObject> walls;
+    std::vector<glm::vec2> free_spaces;
     // direction[i][j] -> direction to take if imposter at i and player at j
     Movement **directions;
+    GameObject *pow_task = nullptr, *vap_task = nullptr;
+
 
     void Load(const char *file);
 
@@ -43,6 +46,7 @@ public:
     glm::vec2 GetImposterPos();
 
     int getIdx(int i, int j);
+
 
 };
 

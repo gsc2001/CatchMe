@@ -7,10 +7,9 @@
 
 GameObject::GameObject()
         : Position(0.0f, 0.0f),
-        Size(1.0f, 1.0f),
-        Color(1.0f),
-        Rotation(0.0f)
-        {
+          Size(1.0f, 1.0f),
+          Color(1.0f),
+          Rotation(0.0f) {
 
 }
 
@@ -20,6 +19,9 @@ GameObject::GameObject(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec
 }
 
 void GameObject::Draw(SpriteRenderer &renderer) {
+    if (!this->IsActive) {
+        return;
+    }
     renderer.DrawSprite(this->Sprite, this->Position, this->Size, this->Rotation, this->Color);
 }
 

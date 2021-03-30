@@ -33,15 +33,21 @@ void Game::Init() {
     this->imposter = new Imposter(maze.GetImposterPos(), maze.GetWallSize() * glm::vec2(0.6f, 1.0f) / 1.5f);
 }
 
+
 void Game::Update(float dt) {
-    this->imposter->Update(this->player->Position, this->maze.directions, this->maze.GetWallSize());
-    if (Game::DetectCollision(*this->imposter, *this->player)) {
-        State = GAME_LOOSE;
+    this->CheckCollisions();
+
+    if (this->imposter->IsActive) {
+        this->imposter->Update(this->player->Position, this->maze.directions, this->maze.GetWallSize());
+        if (Game::DetectCollision(*this->imposter, *this->player)) {
+            State = GAME_LOOSE;
 #ifdef DEBUG
-        std::cout << "YOU LOST" << "\n";
-        exit(0);
-    }
+            std::cout << "YOU LOST" << "\n";
+            exit(0);
+        }
 #endif
+
+    }
 }
 
 void Game::ProcessInput(float dt) {
@@ -70,7 +76,8 @@ void Game::Render() {
 //                         glm::vec2(600.0f, 600.0f), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
     this->maze.Draw(*Renderer);
     this->player->Draw(*Renderer);
-    this->imposter->Draw(*Renderer);
+    if (this->imposter->IsActive)
+        this->imposter->Draw(*Renderer);
 }
 
 void Game::LoadResources() {
@@ -79,6 +86,8 @@ void Game::LoadResources() {
     ResourceManager::LoadTexture("../assets/textures/smile.png", true, "face");
     ResourceManager::LoadTexture("../assets/textures/wall.png", true, "wall");
     ResourceManager::LoadTexture("../assets/textures/player/0.png", true, "player");
+    ResourceManager::LoadTexture("../assets/textures/check.jpg", false, "vapour_task");
+    ResourceManager::LoadTexture("../assets/textures/check.jpg", false, "powerup_task");
 }
 
 bool Game::DetectCollision(const GameObject &a, const GameObject &b) {
@@ -87,4 +96,17 @@ bool Game::DetectCollision(const GameObject &a, const GameObject &b) {
     bool collisionY = a.Position.y + a.Size.y + COLLISION_BUFFER >= b.Position.y &&
                       b.Position.y + b.Size.y + COLLISION_BUFFER >= a.Position.y;
     return collisionX && collisionY;
+}
+
+void Game::CheckCollisions() {
+    // player and vaporize task
+    if (maze.vap_task->IsActive && Game::DetectCollision(*maze.vap_task, *player)) {
+        this->imposter->Vapourize();
+        this->maze.vap_task->IsActive = false;
+    }
+    // player and powerup task
+    if (maze.pow_task->IsActive && Game::DetectCollision(*maze.pow_task, *player)) {
+        // TODO: Spawn powerup / obstacle
+        this->maze.pow_task->IsActive = false;
+    }
 }

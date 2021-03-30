@@ -9,7 +9,7 @@
 #include <vector>
 #include "globals.h"
 
-Maze::Maze(int m, int n) {
+Maze::Maze(int m, int n){
 
     this->M = m;
     this->N = n;
@@ -27,11 +27,11 @@ Maze::Maze(int m, int n) {
     // TODO: remove get from generator
     char temp_maze[][10] = {
             "#S#######",
-            "#     # #",
-            "### # # #",
+            "#       #",
+            "# # #1# #",
             "# # #   #",
-            "# # ### #",
-            "#I  #   #",
+            "# # ###2#",
+            "#I      #",
             "##### ###",
             "#       #",
             "#######E#",
@@ -57,6 +57,15 @@ void Maze::Init() {
                 this->end_pos = glm::vec2(j, i);
             else if (maze[i][j] == 'I')
                 this->imposter_pos = glm::vec2(j, i);
+            else if (maze[i][j] == '1')
+                this->vap_task = new GameObject(glm::vec2(j * wall_size.x, i * wall_size.y), this->wall_size,
+                                                ResourceManager::GetTexture("vapour_task"));
+            else if (maze[i][j] == '2')
+                this->pow_task = new GameObject(glm::vec2(j * wall_size.x, i * wall_size.y), this->wall_size,
+                                                ResourceManager::GetTexture("powerup_task"));
+            else {
+                this->free_spaces.emplace_back(j, i);
+            }
         }
     }
     this->ComputeShortestPaths();
@@ -67,6 +76,8 @@ void Maze::Draw(SpriteRenderer &renderer) {
     for (auto &wall : this->walls) {
         wall.Draw(renderer);
     }
+    this->vap_task->Draw(renderer);
+    this->pow_task->Draw(renderer);
 
 }
 
@@ -150,6 +161,7 @@ void Maze::ComputeShortestPaths() {
                 path.push_back(v);
             }
             if (path.empty()) {
+                this->directions[s][d] = STOP;
                 continue;
             }
             auto last = path[path.size() - 1];

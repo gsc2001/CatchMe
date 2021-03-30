@@ -29,6 +29,7 @@ public:
     void Init();
 
     void ProcessInput(float dt);
+    void CheckCollisions();
 
     void Update(float dt);
 

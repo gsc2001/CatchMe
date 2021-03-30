@@ -80,3 +80,7 @@ void Imposter::AutoMove() {
     }
 
 }
+
+void Imposter::Vapourize() {
+    this->Destroy();
+}

@@ -17,6 +17,7 @@ public:
 
     void Update(glm::vec2 player_pos, Movement **directions, glm::vec2 wall_size);
     void AutoMove();
+    void Vapourize();
 
 };
 
