@@ -35,7 +35,7 @@ void Game::Init() {
     this->imposter = new Imposter(maze.GetImposterPos(), maze.GetWallSize() * glm::vec2(0.6f, 1.0f) / 1.5f);
 
     // TODO: correct this
-    this->imposter->Vapourize();
+//    this->imposter->Vapourize();
 }
 
 
@@ -97,9 +97,13 @@ void Game::LoadResources() {
     ResourceManager::LoadTexture("../assets/textures/smile.png", true, "face");
     ResourceManager::LoadTexture("../assets/textures/wall.png", true, "wall");
 
-    for (int i = 0; i <= 23; i++) {
-        ResourceManager::LoadTexture(("../assets/textures/player/" + std::to_string(i) + ".png").c_str(), true,
-                                     "player_" + std::to_string(i));
+    for (int j = 0; j <= 1; j++) {
+
+        for (int i = 0; i <= 23; i++) {
+            ResourceManager::LoadTexture(
+                    ("../assets/textures/player/" + std::to_string(j) + "/" + std::to_string(i) + ".png").c_str(), true,
+                    "player_" + std::to_string(j) + "_" + std::to_string(i));
+        }
     }
     ResourceManager::LoadTexture("../assets/textures/check.jpg", false, "vapour_task");
     ResourceManager::LoadTexture("../assets/textures/check.jpg", false, "powerup_task");
@@ -117,13 +121,11 @@ bool Game::DetectCollision(const GameObject &a, const GameObject &b) {
 
 void Game::CheckCollisions() {
     // player and vaporize task
-    // TODO: correct this
-#ifndef DEBUG
+//     TODO: correct this
     if (maze.vap_task->IsActive && Game::DetectCollision(*maze.vap_task, *player)) {
         this->imposter->Vapourize();
         this->maze.vap_task->IsActive = false;
     }
-#endif
     // player and powerup task
     if (maze.pow_task->IsActive && Game::DetectCollision(*maze.pow_task, *player)) {
         // TODO: Spawn powerup / obstacle

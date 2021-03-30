@@ -9,6 +9,9 @@
 
 class Player : public GameObject {
 public:
+    // direction 1 = right , 0 = left
+    int direction = 1;
+    int frame = 0;
     Player() : GameObject() {}
 
     Player(glm::vec2 pos, glm::vec2 size, glm::vec3 color = glm::vec3(1.0f));
@@ -22,6 +25,8 @@ public:
     void MoveUp();
 
     void MoveDown();
+
+    void UpdateTexture();
 
 
 };

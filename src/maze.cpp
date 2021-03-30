@@ -9,7 +9,7 @@
 #include <vector>
 #include "globals.h"
 
-Maze::Maze(int m, int n){
+Maze::Maze(int m, int n) {
 
     this->M = m;
     this->N = n;
@@ -57,13 +57,16 @@ void Maze::Init() {
                 this->end_pos = glm::vec2(j, i);
             else if (maze[i][j] == 'I')
                 this->imposter_pos = glm::vec2(j, i);
-            else if (maze[i][j] == '1')
+            else if (maze[i][j] == '1') {
                 this->vap_task = new GameObject(glm::vec2(j * wall_size.x, i * wall_size.y), this->wall_size,
                                                 ResourceManager::GetTexture("vapour_task"));
-            else if (maze[i][j] == '2')
+                this->maze[i][j] = '#';
+            } else if (maze[i][j] == '2') {
                 this->pow_task = new GameObject(glm::vec2(j * wall_size.x, i * wall_size.y), this->wall_size,
                                                 ResourceManager::GetTexture("powerup_task"));
-            else {
+                this->maze[i][j] = '#';
+
+            } else {
                 this->free_spaces.emplace_back(j, i);
             }
         }
