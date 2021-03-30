@@ -14,7 +14,7 @@ void Player::Move(glm::vec2 diff) {
 
 
 Player::Player(glm::vec2 pos, glm::vec2 size, glm::vec3 color) : GameObject(pos, size,
-                                                                            ResourceManager::GetTexture("player"),
+                                                                            ResourceManager::GetTexture("player_0"),
                                                                             color
 ) {
 

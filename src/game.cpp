@@ -96,7 +96,11 @@ void Game::LoadResources() {
                                 "../assets/shaders/fragmentShader.glsl", nullptr, "sprite");
     ResourceManager::LoadTexture("../assets/textures/smile.png", true, "face");
     ResourceManager::LoadTexture("../assets/textures/wall.png", true, "wall");
-    ResourceManager::LoadTexture("../assets/textures/player/0.png", true, "player");
+
+    for (int i = 0; i <= 23; i++) {
+        ResourceManager::LoadTexture(("../assets/textures/player/" + std::to_string(i) + ".png").c_str(), true,
+                                     "player_" + std::to_string(i));
+    }
     ResourceManager::LoadTexture("../assets/textures/check.jpg", false, "vapour_task");
     ResourceManager::LoadTexture("../assets/textures/check.jpg", false, "powerup_task");
     ResourceManager::LoadTexture("../assets/textures/coin.png", true, "coin");
