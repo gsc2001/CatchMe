@@ -28,11 +28,11 @@ Maze::Maze(int m, int n) {
     char temp_maze[][10] = {
             "#S#######",
             "#       #",
-            "#2# #1# #",
-            "# # #   #",
-            "# # ### #",
-            "#I      #",
-            "##### ###",
+            "# ##### #",
+            "#   #   #",
+            "###1# ###",
+            "#   # 1I#",
+            "# ###2###",
             "#       #",
             "#######E#",
     };
@@ -58,10 +58,10 @@ void Maze::Init() {
             else if (maze[i][j] == 'I')
                 this->imposter_pos = glm::vec2(j, i);
             else if (maze[i][j] == '1') {
-                this->vap_task = new GameObject(glm::vec2(j * wall_size.x, i * wall_size.y), this->wall_size,
+                this->vap_task = new GameObject(glm::vec2(j * wall_size.x, i * wall_size.y) +wall_size / 5.0f, 3.0f * this->wall_size / 5.0f,
                                                 ResourceManager::GetTexture("vapour_task"));
             } else if (maze[i][j] == '2') {
-                this->pow_task = new GameObject(glm::vec2(j * wall_size.x, i * wall_size.y), this->wall_size,
+                this->pow_task = new GameObject(glm::vec2(j * wall_size.x, i * wall_size.y) + wall_size / 5.0f, 3.0f * this->wall_size / 5.0f,
                                                 ResourceManager::GetTexture("powerup_task"));
 
             } else {
@@ -187,20 +187,21 @@ void Maze::ComputeShortestPaths() {
         }
     }
 #ifdef DEBUG
-    for (int i = 0; i < M * N; i++) {
-        if (maze[i / N][i % N] == '#') {
-            continue;
-        }
-        std::cout << "\n\n\n";
-        std::cout << "For s" << i << "\n";
-        for (int j = 0; j < M * N; j++) {
-            if (maze[j / N][j % N] == '#') {
-                continue;
-            }
-            std::cout << j << "-> " << directions[i][j] << "\n";
-        }
-        std::cout << "\n\n\n";
-    }
+//    for (int i = 0; i < M * N; i++) {
+//        if (maze[i / N][i % N] == '#') {
+//            continue;
+//        }
+//        std::cout << "\n\n\n";
+//        std::cout << "For s" << i << "\n";
+//        for (int j = 0; j < M * N; j++) {
+//            if (maze[j / N][j % N] == '#') {
+//                continue;
+//            }
+//            std::cout << j << "-> " << directions[i][j] << "\n";
+//        }
+//        std::cout << "\n\n\n";
+//    }
+    std::cout << GetWallSize().x<< " " << GetWallSize().y <<  "\n";
 #endif
 
 }

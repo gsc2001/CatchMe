@@ -14,9 +14,10 @@ enum GameState {
 };
 
 enum Movement {
+    STOP,
     UP,
     DOWN,
-    LEFT, RIGHT, STOP
+    LEFT, RIGHT
 };
 
 const unsigned int SCREEN_WIDTH = 900;
@@ -24,7 +25,7 @@ const unsigned int SCREEN_HEIGHT = 900;
 
 const int MAZE_WIDTH = 9;
 const int MAZE_HEIGHT = 9;
-const float PLAYER_SPEED = 3.0f;
+const float PLAYER_SPEED = 2.5f;
 const float COLLISION_BUFFER = 3.0f;
 const int SCORE_INC = 20;
 const int SCORE_DEC = 20;
