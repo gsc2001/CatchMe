@@ -35,6 +35,11 @@ target_include_directories("stb_image" PRIVATE "${STB_DIR}/include")
 target_include_directories(${PROJECT_NAME} PRIVATE "${STB_DIR}/include")
 target_link_libraries(${PROJECT_NAME} "stb_image")
 
+# freetype
+find_package(Freetype REQUIRED)
+include_directories(${FREETYPE_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} "${FREETYPE_LIBRARIES}")
+
 include(FindPkgConfig)
 
 pkg_check_modules(GL REQUIRED gl)

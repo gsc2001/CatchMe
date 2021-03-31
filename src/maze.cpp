@@ -102,6 +102,7 @@ int Maze::getIdx(int i, int j) {
     return i * MAZE_WIDTH + j;
 }
 
+
 void Maze::ComputeShortestPaths() {
     // index of i, j = N * i + j
     std::vector<std::vector<int>> distances(M * N, std::vector<int>(M * N, INT_MAX));

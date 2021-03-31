@@ -36,7 +36,7 @@ public:
     void Update(float dt);
 
     void Render();
-
+    void DrawHUD();
 
     static void LoadResources();
     static bool DetectCollision(const GameObject& a, const GameObject& b);

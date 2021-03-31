@@ -8,6 +8,7 @@
 #include "game.h"
 #include "resource_manager.h"
 #include "sprite_renderer.h"
+#include "text_renderer.h"
 #include "maze.h"
 
 Game::Game(unsigned int width, unsigned int height) : State(GAME_ACTIVE), Keys(), Width(width), Height(height),
@@ -20,6 +21,7 @@ Game::~Game() {
 }
 
 SpriteRenderer *Renderer;
+TextRenderer *Text;
 
 void Game::Init() {
     LoadResources();
@@ -30,6 +32,8 @@ void Game::Init() {
     shader.SetInteger("u_Image", 0);
     shader.SetMatrix4f("u_Projection", projection);
     Renderer = new SpriteRenderer(shader);
+    Text = new TextRenderer(this->Width, this->Height);
+    Text->Load("../assets/fonts/arial.ttf", 24);
     this->maze.Init();
     this->player = new Player(maze.GetStart(), maze.GetWallSize() * glm::vec2(0.6f, 1.0f) / 1.5f);
     this->imposter = new Imposter(maze.GetImposterPos(), maze.GetWallSize() * glm::vec2(0.6f, 1.0f) / 1.5f);
@@ -78,7 +82,7 @@ void Game::ProcessInput(float dt) {
             any_key_pressed = true;
             this->player->MoveDown();
         }
-        if(!any_key_pressed) {
+        if (!any_key_pressed) {
             this->player->ResetFrames();
         }
 
@@ -105,11 +109,13 @@ void Game::Render() {
     if (this->obstacle != nullptr) {
         this->obstacle->Draw(*Renderer);
     }
+
+    this->DrawHUD();
 }
 
 void Game::LoadResources() {
-    ResourceManager::LoadShader("../assets/shaders/vertexShader.glsl",
-                                "../assets/shaders/fragmentShader.glsl", nullptr, "sprite");
+    ResourceManager::LoadShader("../assets/shaders/sprite_vs.glsl",
+                                "../assets/shaders/sprite_fs.glsl", nullptr, "sprite");
     ResourceManager::LoadTexture("../assets/textures/smile.png", true, "face");
     ResourceManager::LoadTexture("../assets/textures/wall.png", true, "wall");
 
@@ -125,6 +131,9 @@ void Game::LoadResources() {
     ResourceManager::LoadTexture("../assets/textures/red_button.png", true, "powerup_task");
     ResourceManager::LoadTexture("../assets/textures/coin.png", true, "coin");
     ResourceManager::LoadTexture("../assets/textures/bomb.png", true, "bomb");
+    ResourceManager::LoadTexture("../assets/textures/board.jpg", false, "board");
+    ResourceManager::LoadShader("../assets/shaders/text_vs.glsl",
+                                "../assets/shaders/text_fs.glsl", nullptr, "text");
 }
 
 bool Game::DetectCollision(const GameObject &a, const GameObject &b) {
@@ -157,10 +166,12 @@ void Game::CheckCollisions() {
         auto wall_sz = this->maze.GetWallSize();
         if (is_powerup) {
             // powerup
-            this->powerup = new GameObject(wall_sz * position + wall_sz / 4.0f, wall_sz / 2.0f, ResourceManager::GetTexture("coin"));
+            this->powerup = new GameObject(wall_sz * position + wall_sz / 4.0f, wall_sz / 2.0f,
+                                           ResourceManager::GetTexture("coin"));
             std::cout << this->powerup->Position.x << " " << this->powerup->Position.y << "\n";
         } else {
-            this->obstacle = new GameObject(wall_sz * position + wall_sz * glm::vec2(1 / 4.0f, 0.1f), wall_sz * glm::vec2(0.5f, 0.8f), ResourceManager::GetTexture("bomb"));
+            this->obstacle = new GameObject(wall_sz * position + wall_sz * glm::vec2(1 / 4.0f, 0.1f),
+                                            wall_sz * glm::vec2(0.5f, 0.8f), ResourceManager::GetTexture("bomb"));
             std::cout << this->obstacle->Position.x << " " << this->obstacle->Position.y << "\n";
         }
         this->maze.pow_task->IsActive = false;
@@ -178,4 +189,15 @@ void Game::CheckCollisions() {
         delete this->obstacle;
         this->obstacle = nullptr;
     }
+}
+
+void Game::DrawHUD() {
+    GameObject background(glm::vec2(SCREEN_WIDTH + 5, 0), glm::vec2(WINDOW_WIDTH - SCREEN_WIDTH - 12),
+                          ResourceManager::GetTexture("board"));
+    background.Draw(*Renderer);
+    Text->RenderText("Score: " + std::to_string(this->score), SCREEN_WIDTH + 20, 20, 1);
+    auto completed_tasks = (int) (maze.vap_task->IsActive) + (int) (maze.pow_task->IsActive);
+    Text->RenderText("Tasks: " + std::to_string(2 - completed_tasks) + "/2", SCREEN_WIDTH + 20, 80, 1);
+    Text->RenderText("Score: " + std::to_string(this->score), SCREEN_WIDTH + 20, 140, 1);
+
 }

@@ -10,7 +10,7 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode);
 
-Game CatchMe(SCREEN_WIDTH, SCREEN_HEIGHT);
+Game CatchMe(WINDOW_WIDTH, SCREEN_HEIGHT);
 
 int main() {
 
@@ -23,7 +23,7 @@ int main() {
 #endif
     glfwWindowHint(GLFW_RESIZABLE, false);
 
-    GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "CatchMe", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(WINDOW_WIDTH, SCREEN_HEIGHT, "CatchMe", nullptr, nullptr);
     glfwMakeContextCurrent(window);
 
     // glad: load all OpenGL function pointers
@@ -37,7 +37,7 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // OpenGL configuration
-    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    glViewport(0, 0, WINDOW_WIDTH, SCREEN_HEIGHT);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -61,7 +61,6 @@ int main() {
 
         // update game state
         CatchMe.Update(deltaTime);
-
         // render
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
