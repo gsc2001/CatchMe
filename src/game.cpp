@@ -58,14 +58,29 @@ void Game::Update(float dt) {
 void Game::ProcessInput(float dt) {
     if (this->State == GAME_ACTIVE) {
         auto current_pos = this->player->Position;
-        if (this->Keys[GLFW_KEY_A])
+        bool any_key_pressed = false;
+        if (this->Keys[GLFW_KEY_A]) {
+            any_key_pressed = true;
             this->player->MoveLeft();
-        if (this->Keys[GLFW_KEY_D])
+        }
+        if (this->Keys[GLFW_KEY_D]) {
+
+            any_key_pressed = true;
             this->player->MoveRight();
-        if (this->Keys[GLFW_KEY_W])
+        }
+        if (this->Keys[GLFW_KEY_W]) {
+
+            any_key_pressed = true;
             this->player->MoveUp();
-        if (this->Keys[GLFW_KEY_S])
+        }
+        if (this->Keys[GLFW_KEY_S]) {
+
+            any_key_pressed = true;
             this->player->MoveDown();
+        }
+        if(!any_key_pressed) {
+            this->player->ResetFrames();
+        }
 
         // detect collision with wall
         for (const auto &wall : this->maze.walls) {
@@ -73,6 +88,7 @@ void Game::ProcessInput(float dt) {
                 this->player->Position = current_pos;
             }
         }
+
     }
 }
 

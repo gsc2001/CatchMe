@@ -60,11 +60,9 @@ void Maze::Init() {
             else if (maze[i][j] == '1') {
                 this->vap_task = new GameObject(glm::vec2(j * wall_size.x, i * wall_size.y), this->wall_size,
                                                 ResourceManager::GetTexture("vapour_task"));
-                this->maze[i][j] = '#';
             } else if (maze[i][j] == '2') {
                 this->pow_task = new GameObject(glm::vec2(j * wall_size.x, i * wall_size.y), this->wall_size,
                                                 ResourceManager::GetTexture("powerup_task"));
-                this->maze[i][j] = '#';
 
             } else {
                 this->free_spaces.emplace_back(j, i);

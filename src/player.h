@@ -27,6 +27,7 @@ public:
     void MoveDown();
 
     void UpdateTexture();
+    void ResetFrames();
 
 
 };

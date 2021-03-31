@@ -43,3 +43,9 @@ void Player::UpdateTexture() {
     this->frame %= 24;
     this->Sprite = ResourceManager::GetTexture("player_" + std::to_string(direction) + "_" + std::to_string(frame));
 }
+
+void Player::ResetFrames() {
+    this->frame = 0;
+    this->UpdateTexture();
+
+}

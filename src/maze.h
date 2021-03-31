@@ -45,7 +45,7 @@ public:
 
     glm::vec2 GetImposterPos();
 
-    int getIdx(int i, int j);
+    static int getIdx(int i, int j);
 
 
 };
