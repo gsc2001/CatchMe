@@ -172,11 +172,11 @@ void Game::CheckCollisions() {
         std::uniform_int_distribution<int> r2(0, 1);
         std::uniform_int_distribution<int> r_walls(0, this->maze.free_spaces.size() - 1);
 
-        bool is_powerup = r2(mt);
+        int is_powerup = r2(mt);
 
         auto position = this->maze.free_spaces[r_walls(mt)];
         auto wall_sz = this->maze.GetWallSize();
-        if (is_powerup) {
+        if (is_powerup == 1) {
             // powerup
             this->powerup = new GameObject(wall_sz * position + wall_sz / 4.0f, wall_sz / 2.0f,
                                            ResourceManager::GetTexture("coin"));
