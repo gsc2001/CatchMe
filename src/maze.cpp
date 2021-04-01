@@ -93,7 +93,7 @@ glm::vec2 Maze::GetStart() {
 }
 
 glm::vec2 Maze::GetEnd() {
-    return wall_size * end_pos + wall_size / 4.0f;
+    return wall_size * end_pos + glm::vec2(0.1f, 0.35f) * wall_size;
 }
 
 glm::vec2 Maze::GetImposterPos() {

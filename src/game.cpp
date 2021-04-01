@@ -37,24 +37,20 @@ void Game::Init() {
     this->maze.Init();
     this->player = new Player(maze.GetStart(), maze.GetWallSize() * glm::vec2(0.6f, 1.0f) / 1.5f);
     this->imposter = new Imposter(maze.GetImposterPos(), maze.GetWallSize() * glm::vec2(0.6f, 1.0f) / 1.5f);
-
+    this->exit_gate = new GameObject(maze.GetEnd(), maze.GetWallSize() * glm::vec2(0.8f, 0.5f),
+                                     ResourceManager::GetTexture("exit"));
     // TODO: correct this
 //    this->imposter->Vaporize();
 }
 
 
 void Game::Update(float dt) {
+    if (State != GAME_ACTIVE)
+        return;
     this->CheckCollisions();
 
     if (this->imposter->IsActive) {
         this->imposter->Update(this->player->Position, this->maze.directions, this->maze.GetWallSize(), this->maze.N);
-        if (Game::DetectCollision(*this->imposter, *this->player)) {
-            State = GAME_LOOSE;
-#ifdef DEBUG
-            std::cout << "YOU LOST" << "\n";
-            exit(0);
-        }
-#endif
 
     }
 }
@@ -97,20 +93,25 @@ void Game::ProcessInput(float dt) {
 }
 
 void Game::Render() {
-//    Renderer->DrawSprite(ResourceManager::GetTexture("face"), glm::vec2(200.0f, 200.0f),
-//                         glm::vec2(600.0f, 600.0f), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-    this->maze.Draw(*Renderer);
-    this->player->Draw(*Renderer);
-    if (this->imposter->IsActive)
-        this->imposter->Draw(*Renderer);
-    if (this->powerup != nullptr) {
-        this->powerup->Draw(*Renderer);
-    }
-    if (this->obstacle != nullptr) {
-        this->obstacle->Draw(*Renderer);
-    }
+    if (State == GAME_ACTIVE) {
+        this->maze.Draw(*Renderer);
+        this->player->Draw(*Renderer);
+        if (this->imposter->IsActive)
+            this->imposter->Draw(*Renderer);
+        if (this->powerup != nullptr) {
+            this->powerup->Draw(*Renderer);
+        }
+        if (this->obstacle != nullptr) {
+            this->obstacle->Draw(*Renderer);
+        }
+        this->exit_gate->Draw(*Renderer);
 
-    this->DrawHUD();
+        this->DrawHUD();
+    } else if (State == GAME_WIN) {
+        Text->RenderText("YOU WON !!!", SCREEN_HEIGHT / 4.0f, WINDOW_WIDTH / 4.0f, 2);
+    } else if (State == GAME_LOOSE) {
+        Text->RenderText("YOU Lose :(", SCREEN_HEIGHT / 4.0f, WINDOW_WIDTH / 4.0f, 2);
+    }
 }
 
 void Game::LoadResources() {
@@ -132,6 +133,7 @@ void Game::LoadResources() {
     ResourceManager::LoadTexture("../assets/textures/coin.png", true, "coin");
     ResourceManager::LoadTexture("../assets/textures/bomb.png", true, "bomb");
     ResourceManager::LoadTexture("../assets/textures/board.jpg", false, "board");
+    ResourceManager::LoadTexture("../assets/textures/exit.png", true, "exit");
     ResourceManager::LoadShader("../assets/shaders/text_vs.glsl",
                                 "../assets/shaders/text_fs.glsl", nullptr, "text");
 }
@@ -146,7 +148,9 @@ bool Game::DetectCollision(const GameObject &a, const GameObject &b) {
 
 void Game::CheckCollisions() {
     // player and vaporize task
-//     TODO: correct this
+    if (State != GAME_ACTIVE) {
+        return;
+    }
     if (maze.vap_task->IsActive && Game::DetectCollision(*maze.vap_task, *player)) {
         this->imposter->Vaporize();
         this->maze.vap_task->IsActive = false;
@@ -188,6 +192,16 @@ void Game::CheckCollisions() {
         this->score -= SCORE_DEC;
         delete this->obstacle;
         this->obstacle = nullptr;
+    }
+    if (this->imposter->IsActive) {
+        if (Game::DetectCollision(*this->imposter, *this->player)) {
+            State = GAME_LOOSE;
+        }
+    }
+
+    auto pending_tasks = (int) (maze.vap_task->IsActive) + (int) (maze.pow_task->IsActive);
+    if (Game::DetectCollision(*this->exit_gate, *this->player) and pending_tasks == 0) {
+        State = GAME_WIN;
     }
 }
 
