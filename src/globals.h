@@ -24,8 +24,6 @@ const unsigned int SCREEN_WIDTH = 900;
 const unsigned int SCREEN_HEIGHT = 900;
 const unsigned int WINDOW_WIDTH = 1200;
 
-const int MAZE_WIDTH = 9;
-const int MAZE_HEIGHT = 9;
 const float PLAYER_SPEED = 2.5f;
 const float COLLISION_BUFFER = 3.0f;
 const int SCORE_INC = 20;

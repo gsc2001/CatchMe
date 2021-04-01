@@ -6,7 +6,7 @@
 #include "maze.h"
 
 
-void Imposter::Update(glm::vec2 player_pos, Movement **directions, glm::vec2 wall_size) {
+void Imposter::Update(glm::vec2 player_pos, Movement **directions, glm::vec2 wall_size, int maze_width) {
     bool check_dir = false;
     switch (current_dir) {
         case UP:
@@ -30,7 +30,7 @@ void Imposter::Update(glm::vec2 player_pos, Movement **directions, glm::vec2 wal
         auto cord_i = glm::floor(this->Position / wall_size);
         int p_i = cord_p.y, p_j = cord_p.x;
         int i_i = cord_i.y, i_j = cord_i.x;
-        int p = p_i * MAZE_WIDTH + p_j, imposter = i_i * MAZE_WIDTH + i_j;
+        int p = p_i * maze_width + p_j, imposter = i_i * maze_width + i_j;
 
         auto direction = directions[imposter][p];
         current_dir = direction;
@@ -81,6 +81,6 @@ void Imposter::AutoMove() {
 
 }
 
-void Imposter::Vapourize() {
+void Imposter::Vaporize() {
     this->Destroy();
 }

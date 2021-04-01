@@ -12,13 +12,13 @@
 
 class Maze {
 private:
-    int M, N;
-    char **maze;
+    std::vector<std::string> maze;
     glm::vec2 wall_size;
     glm::vec2 start_pos, end_pos, imposter_pos;
 public:
+    int M, N;
 
-    Maze(int m, int n);
+    Maze();
 
     void Init();
 
@@ -29,7 +29,7 @@ public:
     GameObject *pow_task = nullptr, *vap_task = nullptr;
 
 
-    void Load(const char *file);
+    void Load();
 
     void Draw(SpriteRenderer &renderer);
 
@@ -45,7 +45,7 @@ public:
 
     glm::vec2 GetImposterPos();
 
-    static int getIdx(int i, int j);
+    int getIdx(int i, int j) const;
 
 
 };

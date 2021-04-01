@@ -12,7 +12,7 @@
 #include "maze.h"
 
 Game::Game(unsigned int width, unsigned int height) : State(GAME_ACTIVE), Keys(), Width(width), Height(height),
-                                                      maze(MAZE_HEIGHT, MAZE_WIDTH) {
+                                                      maze() {
 }
 
 
@@ -39,7 +39,7 @@ void Game::Init() {
     this->imposter = new Imposter(maze.GetImposterPos(), maze.GetWallSize() * glm::vec2(0.6f, 1.0f) / 1.5f);
 
     // TODO: correct this
-//    this->imposter->Vapourize();
+//    this->imposter->Vaporize();
 }
 
 
@@ -47,7 +47,7 @@ void Game::Update(float dt) {
     this->CheckCollisions();
 
     if (this->imposter->IsActive) {
-        this->imposter->Update(this->player->Position, this->maze.directions, this->maze.GetWallSize());
+        this->imposter->Update(this->player->Position, this->maze.directions, this->maze.GetWallSize(), this->maze.N);
         if (Game::DetectCollision(*this->imposter, *this->player)) {
             State = GAME_LOOSE;
 #ifdef DEBUG
@@ -148,7 +148,7 @@ void Game::CheckCollisions() {
     // player and vaporize task
 //     TODO: correct this
     if (maze.vap_task->IsActive && Game::DetectCollision(*maze.vap_task, *player)) {
-        this->imposter->Vapourize();
+        this->imposter->Vaporize();
         this->maze.vap_task->IsActive = false;
     }
     // player and powerup task
@@ -156,7 +156,7 @@ void Game::CheckCollisions() {
         // TODO: Spawn powerup / obstacle
         std::random_device rd;
         std::mt19937 mt(rd());
-        std::uniform_int_distribution<int> r2(0, 2);
+        std::uniform_int_distribution<int> r2(0, 1);
         std::uniform_int_distribution<int> r_walls(0, this->maze.free_spaces.size());
 
         bool is_powerup = r2(mt);

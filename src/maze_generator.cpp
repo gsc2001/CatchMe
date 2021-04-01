@@ -123,8 +123,8 @@ int main_1(int argc, char const *argv[]) {
 //    cout << "Random Maze Generator!" << endl;
 //    cout << "Enter the order of maze you want (rows (> 1) x cols (> 1)): ";
 //    cin >> m >> n;
-    m = 4;
-    n = 4;
+    m = 7;
+    n = 7;
     while (m < 1 || n < 1) {
         cout << "Desired dimensions impossible. Re-enter pls." << endl;
         cin >> m >> n;

@@ -15,9 +15,11 @@ private:
 public:
     Imposter(glm::vec2 pos, glm::vec2 size) : Player(pos, size, glm::vec3(1.0f, 0.0f, 1.0f)) {}
 
-    void Update(glm::vec2 player_pos, Movement **directions, glm::vec2 wall_size);
+    void Update(glm::vec2 player_pos, Movement **directions, glm::vec2 wall_size, int maze_width);
+
     void AutoMove();
-    void Vapourize();
+
+    void Vaporize();
 
 };
 

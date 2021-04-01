@@ -6,42 +6,42 @@
 
 #include "resource_manager.h"
 #include <iostream>
+#include <fstream>
+#include <random>
 #include <vector>
+#include <string>
 #include "globals.h"
 
-Maze::Maze(int m, int n) {
+Maze::Maze() {
 
-    this->M = m;
-    this->N = n;
-    this->maze = new char *[M];
+    this->Load();
     this->directions = new Movement *[M * N];
-    for (int i = 0; i < M; i++) {
-        this->maze[i] = new char[N];
-
-    }
     for (int i = 0; i < M * N; i++)
         this->directions[i] = new Movement[M * N];
 
-
-
-    // TODO: remove get from generator
-    char temp_maze[][10] = {
-            "#S#######",
-            "#       #",
-            "# ##### #",
-            "#   #   #",
-            "###1# ###",
-            "#   # 1I#",
-            "# ###2###",
-            "#       #",
-            "#######E#",
-    };
-
-    for (int i = 0; i < M; i++) {
-        for (int j = 0; j < N; j++)
-            maze[i][j] = temp_maze[i][j];
-    }
     this->wall_size = glm::vec2(SCREEN_WIDTH / N, SCREEN_HEIGHT / M);
+}
+
+
+void Maze::Load() {
+    this->walls.clear();
+    this->maze.clear();
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> r2(0, 3);
+
+    auto n = r2(mt);
+    std::string file_path = "../assets/levels/" + std::to_string(n) + ".txt", line;
+    std::ifstream file_stream(file_path.c_str());
+    if (file_stream) {
+        while (std::getline(file_stream, line)) {
+            this->maze.push_back(line);
+        }
+        this->M = maze.size(), this->N = maze[0].size();
+    } else {
+        std::cout << "Invalid level path " << file_path << "\n";
+        exit(1);
+    }
 }
 
 void Maze::Init() {
@@ -58,10 +58,12 @@ void Maze::Init() {
             else if (maze[i][j] == 'I')
                 this->imposter_pos = glm::vec2(j, i);
             else if (maze[i][j] == '1') {
-                this->vap_task = new GameObject(glm::vec2(j * wall_size.x, i * wall_size.y) +wall_size / 5.0f, 3.0f * this->wall_size / 5.0f,
+                this->vap_task = new GameObject(glm::vec2(j * wall_size.x, i * wall_size.y) + wall_size / 5.0f,
+                                                3.0f * this->wall_size / 5.0f,
                                                 ResourceManager::GetTexture("vapour_task"));
             } else if (maze[i][j] == '2') {
-                this->pow_task = new GameObject(glm::vec2(j * wall_size.x, i * wall_size.y) + wall_size / 5.0f, 3.0f * this->wall_size / 5.0f,
+                this->pow_task = new GameObject(glm::vec2(j * wall_size.x, i * wall_size.y) + wall_size / 5.0f,
+                                                3.0f * this->wall_size / 5.0f,
                                                 ResourceManager::GetTexture("powerup_task"));
 
             } else {
@@ -98,8 +100,8 @@ glm::vec2 Maze::GetImposterPos() {
     return wall_size * imposter_pos + wall_size / 4.0f;
 }
 
-int Maze::getIdx(int i, int j) {
-    return i * MAZE_WIDTH + j;
+int Maze::getIdx(int i, int j) const {
+    return i * N + j;
 }
 
 
@@ -202,7 +204,7 @@ void Maze::ComputeShortestPaths() {
 //        }
 //        std::cout << "\n\n\n";
 //    }
-    std::cout << GetWallSize().x<< " " << GetWallSize().y <<  "\n";
+    std::cout << GetWallSize().x << " " << GetWallSize().y << "\n";
 #endif
 
 }
