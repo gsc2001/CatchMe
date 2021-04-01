@@ -11,6 +11,8 @@
 #include "imposter.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
+#include <chrono>
 
 
 class Game {
@@ -20,6 +22,7 @@ public:
     int score = 0;
     GameObject *powerup = nullptr, *obstacle = nullptr, *exit_gate = nullptr;
     Imposter *imposter;
+    std::chrono::high_resolution_clock::time_point start_time;
     Maze maze;
     bool Keys[1024];
     unsigned int Width, Height;
@@ -40,6 +43,8 @@ public:
 
     static void LoadResources();
     static bool DetectCollision(const GameObject& a, const GameObject& b);
+
+    unsigned int GetRemainingTime() const;
 };
 
 

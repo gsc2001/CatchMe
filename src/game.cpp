@@ -39,10 +39,14 @@ void Game::Init() {
     this->imposter = new Imposter(maze.GetImposterPos(), maze.GetWallSize() * glm::vec2(0.6f, 1.0f) / 1.5f);
     this->exit_gate = new GameObject(maze.GetEnd(), maze.GetWallSize() * glm::vec2(0.8f, 0.5f),
                                      ResourceManager::GetTexture("exit"));
-    // TODO: correct this
-//    this->imposter->Vaporize();
+    this->start_time = std::chrono::high_resolution_clock::now();
 }
 
+unsigned int Game::GetRemainingTime() const {
+    auto end = std::chrono::high_resolution_clock::now();
+    auto time_diff = std::chrono::duration_cast<std::chrono::seconds>(end - this->start_time);
+    return TIME_LIMIT - time_diff.count();
+}
 
 void Game::Update(float dt) {
     if (State != GAME_ACTIVE)
@@ -51,8 +55,13 @@ void Game::Update(float dt) {
 
     if (this->imposter->IsActive) {
         this->imposter->Update(this->player->Position, this->maze.directions, this->maze.GetWallSize(), this->maze.N);
-
     }
+
+    // check game over
+    if (this->GetRemainingTime() <= 0) {
+        State = GAME_LOOSE;
+    }
+
 }
 
 void Game::ProcessInput(float dt) {
@@ -212,6 +221,6 @@ void Game::DrawHUD() {
     Text->RenderText("Score: " + std::to_string(this->score), SCREEN_WIDTH + 20, 20, 1);
     auto completed_tasks = (int) (maze.vap_task->IsActive) + (int) (maze.pow_task->IsActive);
     Text->RenderText("Tasks: " + std::to_string(2 - completed_tasks) + "/2", SCREEN_WIDTH + 20, 80, 1);
-    Text->RenderText("Score: " + std::to_string(this->score), SCREEN_WIDTH + 20, 140, 1);
+    Text->RenderText("Time Remaining: " + std::to_string(this->GetRemainingTime()), SCREEN_WIDTH + 20, 140, 1);
 
 }

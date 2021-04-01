@@ -6,8 +6,6 @@ set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libraries")
 file(GLOB SOURCE_FILES ${SRC_DIR}/*.cpp)
 add_executable(CatchMe ${SOURCE_FILES})
-# TODO: Remove this
-add_definitions(-DDEBUG)
 
 # GLFW
 set(GLFW_DIR "${LIB_DIR}/glfw")
