@@ -170,7 +170,7 @@ void Game::CheckCollisions() {
         std::random_device rd;
         std::mt19937 mt(rd());
         std::uniform_int_distribution<int> r2(0, 1);
-        std::uniform_int_distribution<int> r_walls(0, this->maze.free_spaces.size());
+        std::uniform_int_distribution<int> r_walls(0, this->maze.free_spaces.size() - 1);
 
         bool is_powerup = r2(mt);
 
