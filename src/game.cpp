@@ -137,7 +137,7 @@ void Game::LoadResources() {
                     "player_" + std::to_string(j) + "_" + std::to_string(i));
         }
     }
-    ResourceManager::LoadTexture("../assets/textures/check.jpg", false, "vapour_task");
+    ResourceManager::LoadTexture("../assets/textures/vaporize.jpg", false, "vapour_task");
     ResourceManager::LoadTexture("../assets/textures/red_button.png", true, "powerup_task");
     ResourceManager::LoadTexture("../assets/textures/coin.png", true, "coin");
     ResourceManager::LoadTexture("../assets/textures/bomb.png", true, "bomb");
