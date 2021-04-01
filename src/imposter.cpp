@@ -34,7 +34,6 @@ void Imposter::Update(glm::vec2 player_pos, Movement **directions, glm::vec2 wal
 
         auto direction = directions[imposter][p];
         current_dir = direction;
-        std::cout << p << " " << imposter << " " << current_dir << "\n";
          switch (direction) {
             case UP:
                 next_mov = Position - glm::vec2(0, wall_size.y);

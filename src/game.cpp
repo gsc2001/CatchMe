@@ -137,7 +137,7 @@ void Game::LoadResources() {
                     "player_" + std::to_string(j) + "_" + std::to_string(i));
         }
     }
-    ResourceManager::LoadTexture("../assets/textures/check.jpg", false, "vapour_task");
+    ResourceManager::LoadTexture("../assets/textures/vaporize.jpg", false, "vapour_task");
     ResourceManager::LoadTexture("../assets/textures/red_button.png", true, "powerup_task");
     ResourceManager::LoadTexture("../assets/textures/coin.png", true, "coin");
     ResourceManager::LoadTexture("../assets/textures/bomb.png", true, "bomb");
@@ -173,7 +173,6 @@ void Game::CheckCollisions() {
         std::uniform_int_distribution<int> r_walls(0, this->maze.free_spaces.size());
 
         bool is_powerup = r2(mt);
-        std::cout << is_powerup << "\n";
 
         auto position = this->maze.free_spaces[r_walls(mt)];
         auto wall_sz = this->maze.GetWallSize();
@@ -181,11 +180,9 @@ void Game::CheckCollisions() {
             // powerup
             this->powerup = new GameObject(wall_sz * position + wall_sz / 4.0f, wall_sz / 2.0f,
                                            ResourceManager::GetTexture("coin"));
-            std::cout << this->powerup->Position.x << " " << this->powerup->Position.y << "\n";
         } else {
             this->obstacle = new GameObject(wall_sz * position + wall_sz * glm::vec2(1 / 4.0f, 0.1f),
                                             wall_sz * glm::vec2(0.5f, 0.8f), ResourceManager::GetTexture("bomb"));
-            std::cout << this->obstacle->Position.x << " " << this->obstacle->Position.y << "\n";
         }
         this->maze.pow_task->IsActive = false;
     }
